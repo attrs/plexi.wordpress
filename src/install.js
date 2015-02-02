@@ -36,6 +36,7 @@ function rmdirRecursive(path) {
 };
 
 var task_install = function () {
+	process.stdin.resume();
 	process.stdout.write(chalk.yellow('wordpress version: ') + '' + chalk.gray('(latest) '));
 	
 	process.stdin.once('data', function(inputVersion) {
@@ -115,12 +116,12 @@ var task_install = function () {
 };
 
 var task_phplocation = function () {
+	process.stdin.resume();
 	process.stdout.write(chalk.yellow('php location: ') + '' + chalk.gray('(default) '));
 	
 	process.stdin.once('data', function(phplocation) {
 		process.stdin.pause();	
-		phplocation = phplocation.replace(/[\n\r]/g, ' ').trim();
-		
+		phplocation = phplocation.replace(/[\n\r]/g, ' ').trim();		
 		
 		if(	phplocation ) {
 			var config = {bin:phplocation};
@@ -129,7 +130,6 @@ var task_phplocation = function () {
 	});
 };
 
-process.stdin.resume();
 process.stdin.setEncoding('utf-8');
-//task_install();
-task_phplocation();
+task_install();
+//task_phplocation();

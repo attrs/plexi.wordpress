@@ -13,8 +13,7 @@
     }
   },
   "bin": {
-    "wordpress": "bin/wordpress.js",
-    "wp": "bin/wordpress.js"
+    "wordpress": "bin/wordpress.js"
   },
   "dependencies": {
     "attrs.argv": "^0.2.0-a",
