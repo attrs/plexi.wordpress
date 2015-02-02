@@ -62,10 +62,12 @@ console.log(wp.pid());
 ```sh
 $ sudo npm install -g plexi.wordpress
 ...
-wordpress version: (latest) *4.1* (enter wordpress version you want)
-php location: (default) */Applications/MAMP/bin/php/php5.6.2/bin/php* (enter php binary location)
+wordpress version: (latest) 4.1 (enter wordpress version you want)
+php location: (default) /Applications/MAMP/bin/php/php5.6.2/bin/php (enter php binary location)
 ...
 
+$ wordpress
+or
 $ wordpress --port 8080 --host 127.0.0.1
 [default] process started [/Applications/MAMP/bin/php/php5.6.2/bin/php -S 127.0.0.1:8080]
 Wordpress started at "127.0.0.1:8080", docbase "/usr/local/lib/node_modules/plexi.wordpress/wordpress"
