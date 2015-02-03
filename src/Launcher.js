@@ -60,7 +60,7 @@ Launcher.prototype = {
 			console.log('process error: ' + err);
 		});
 		
-		console.log('[' + this.name + '] process started [' + this.command + ']');
+		console.log('[wordpress] process(' + this.name + ') started [' + this.command + ']');
 		
 		this.child = child;	
 		return this;
@@ -76,7 +76,7 @@ Launcher.prototype = {
 		if( this.child ) {
 			code = this.child.kill('SIGHUP');
 			this.child = null;
-			console.log('[' + this.name + '] process stopped(' + code + ') [' + this.command + ']');
+			console.log('[wordpress] process(' + this.name + ') stopped(' + code + ') [' + this.command + ']');
 		}
 		return code;
 	}

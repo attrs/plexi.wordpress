@@ -9,8 +9,9 @@ module.exports = {
 		
 		var create = function(name, config) {			
 			var out = config.console ? process.stdout : null;
-			Launcher.create(k, config).start(out);
-			console.log('* Wordpress Started. [' + k + ':' + (config.port) + ']');
+			var launcher = Launcher.create(name, config).start(out);
+			console.log('[php] server(' + name + ') started. [' + launcher.host + ':' + launcher.port + ', "' + launcher.cwd + '"]');
+			return launcher;
 		};
 		
 		var instances = options.instances;
@@ -40,6 +41,5 @@ module.exports = {
 	},
 	stop: function(ctx) {
 		Launcher.stopAll();
-		console.log('* All Wordpress Process Stopped');
 	}
 };
