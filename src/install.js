@@ -85,8 +85,6 @@ var task_install = function () {
 						bar.tick();
 					}
 				});
-				
-				task_phplocation();
 			}
 	
 			if( !fs.existsSync(cachefile) ) {
@@ -112,21 +110,6 @@ var task_install = function () {
 			}
 		};
 		download();
-	});
-};
-
-var task_phplocation = function () {
-	process.stdin.resume();
-	process.stdout.write(chalk.yellow('php location: ') + '' + chalk.gray('(default) '));
-	
-	process.stdin.once('data', function(phplocation) {
-		process.stdin.pause();	
-		phplocation = phplocation.replace(/[\n\r]/g, ' ').trim();		
-		
-		if(	phplocation ) {
-			var config = {bin:phplocation};
-			fs.writeFileSync(path.resolve(__dirname, '..', 'php-config.ini'), ini.stringify(config))
-		}
 	});
 };
 

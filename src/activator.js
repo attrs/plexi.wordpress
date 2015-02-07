@@ -1,45 +1,71 @@
-var Launcher = require('./Launcher.js');
 var path = require('path');
 var fs = require('fs');
+var wrench = require('wrench');
+
+var instances = {};
 
 module.exports = {
 	start: function(ctx) {
-		var options = ctx.preference;
-		var ws = ctx.workspace;
+		var http = ctx.require('plexi.http');
 		
-		var create = function(name, config) {			
-			var out = config.console ? process.stdout : null;
-			var launcher = Launcher.create(name, config).start(out);
-			console.log('[php] server(' + name + ') started. [' + launcher.host + ':' + launcher.port + ', "' + launcher.cwd + '"]');
-			return launcher;
+		var options = ctx.preference;
+		var sourcedir = path.resolve(__dirname, '..', 'wordpress');
+		
+		var create = function(name, config) {
+			if( !name || typeof name !== 'string' ) return console.error('wordpress name must be a string', name);
+			if( instances[name] ) return console.error('already exists wordpress name', name);
+			if( typeof config === 'string' ) config = {docbase:config};
+			if( typeof config.docbase !== 'string' ) return console.error('invalid config.docbase', config.docbase);
+	
+			var docbase = config.docbase;
+			
+			if( !fs.existsSync(docbase) ) {
+				//wrench.mkdirSyncRecursive(docbase, 0777);				
+				wrench.copyDirSyncRecursive(sourcedir, docbase, {
+					forceDelete: false,
+					preserveFiles: true
+				});
+			}
+			
+			var router = http.create(name).docbase(docbase);
+			var mount = config.mount;
+			if( mount && mount.path ) {
+				if( mount.all ) {
+					http.mountToAll(mount.path, router);
+				} else if( mount.server ) {
+					var server = http.server(mount.server);
+					if( server ) server.mount(mount.path, router);
+					else console.error('[wordpress] not found server', mount.server);
+				} else {
+					http.mount(mount.path, router);
+				}
+			}
+		
+			return instances[name] = router;
 		};
 		
-		var instances = options.instances;
-		for(var k in instances) {
-			create(k, instances[k]);
+		for(var k in options.instances) {
+			create(k, options.instances[k]);
 		}
-				
-		return {
-			create: function(name, config) {
-				return create(name, config);
-			},
+		
+		var exports = {
+			create: create,
 			remove: function(name) {
-				return Launcher.remove(name);
-			},
-			names: function() {
-				return Launcher.names();
+				delete instances[name];				
+				return this;
 			},
 			get: function(name) {
-				return Launcher.get(name);
+				return instances[name];
 			},
-			stop: function(name) {
-				var p = Launcher.get(name);
-				if( p ) return p.stop();
-			},
-			Launcher: Launcher
+			names: function() {
+				var names = [];
+				for(var k in instances) names.push(k);
+				return names;
+			}
 		};
+		
+		return exports;
 	},
 	stop: function(ctx) {
-		Launcher.stopAll();
 	}
 };
