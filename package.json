@@ -9,7 +9,8 @@
   "plexi": {
     "activator": "src/activator.js",
     "dependencies": {
-      "plexi.http": "*"
+      "plexi.http": "*",
+      "plexi.php": "*"
     }
   },
   "bin": {

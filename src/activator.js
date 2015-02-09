@@ -27,7 +27,9 @@ module.exports = {
 				});
 			}
 			
-			var router = http.create(name).docbase(docbase);
+			ctx.require('plexi.php');
+			
+			var router = http.create(name).docbase(docbase).filter('**/*', 'php').index('index.php');
 			var mount = config.mount;
 			if( mount && mount.path ) {
 				if( mount.all ) {
