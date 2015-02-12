@@ -8,7 +8,7 @@ module.exports = {
 	start: function(ctx) {
 		var http = ctx.require('plexi.http');
 		
-		var options = ctx.preference;
+		var pref = ctx.preference || {};
 		var sourcedir = path.resolve(__dirname, '..', 'wordpress');
 		
 		var create = function(name, config) {
@@ -46,8 +46,8 @@ module.exports = {
 			return instances[name] = router;
 		};
 		
-		for(var k in options.instances) {
-			create(k, options.instances[k]);
+		for(var k in pref.instances) {
+			create(k, pref.instances[k]);
 		}
 		
 		var exports = {
