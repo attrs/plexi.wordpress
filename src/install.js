@@ -116,7 +116,7 @@ function phpinstall(callback) {
 				if( value.phpbin === 'Input path directly' ) return true;
 			},
 			validate: function(value) {
-				if( !value || fs.existsSync(value) ) return true;
+				if( !value || (fs.existsSync(value) && fs.statSync(value).isFile()) ) return true;
 			}
 		}, {
 			type: "list",
@@ -138,10 +138,8 @@ function phpinstall(callback) {
 				
 				callback(null, path.resolve(dir, 'php.exe'));
 			});
-		} else if( answers.phpbin ) {
-			callback(null, answers.phpbin);
 		} else {
-			callback(new Error('invalid input value:' + JSON.stringify(answers)));
+			callback(null, answers.phpbin || '');
 		}
 	});
 }

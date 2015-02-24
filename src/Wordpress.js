@@ -18,11 +18,9 @@ function Wordpress(options) {
 	}
 	
 	this.source = options.source || source;
-	this.phpbin = options.phpbin || phpbin;
+	this.phpbin = options.phpbin || phpbin || 'php';
 	this.options = options;
 	
-	if( !this.phpbin ) throw new Error('config.ini/phpbin not defined');
-	if( !fs.existsSync(this.phpbin) ) throw new Error('phpbin not exist:' + this.phpbin);
 	if( !this.source ) throw new Error('config.ini/source: not defined config.ini/source');
 	if( !fs.existsSync(path.join(this.source, 'wp-load.php')) ) throw new Error('invalid wordpress source path:' + this.source);
 }
