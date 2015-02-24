@@ -11,7 +11,7 @@ process.title = pkg.name;
 var wordpress = Wordpress.create('example', {
 	host: argv.host || '127.0.0.1',
 	port: parseInt(argv.port) || 9200,
-	docbase: path.resolve(__dirname, 'wordpress'),
+	docbase: path.resolve(process.cwd(), 'wordpress'),
 	console: true
 });
 
