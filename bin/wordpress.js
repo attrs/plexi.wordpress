@@ -1,18 +1,28 @@
 #!/usr/bin/env node
 
-'use strict';
-
-var argv = require('attrs.argv');
-var c = require('chalk');
+var path = require('path');
+var util = require('attrs.util');
 var pkg = require('../package.json');
-var Launcher = require('../src/Launcher.js');
+var Wordpress = require('../');
+var argv = util.argv();
 
 process.title = pkg.name;
-process.on('SIGINT', function () {
-	Launcher.stopAll();	
-	process.exit();
+
+var wordpress = Wordpress.create('example', {
+	host: argv.host || '127.0.0.1',
+	port: parseInt(argv.port) || 9200,
+	docbase: path.resolve(__dirname, 'wordpress'),
+	console: true
 });
 
-var wp = Launcher.create('default', argv).start(process.stdout);
+util.debug('wordpress', 'starting at', wordpress.options.docbase);
+wordpress.ensureInstall(function(err) {
+	if( err ) return util.error(err);
+	
+	wordpress.start();
+});
 
-console.log(c.cyan('Wordpress started') + ' at ' + c.green('"' + wp.host + ':' + wp.port + '"') + ', docbase ' + c.green('"' + wp.cwd + '"'));
+process.on('SIGINT', function () {
+	wordpress.stop();	
+	process.exit();
+});

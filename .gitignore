@@ -16,5 +16,4 @@ node_modules
 npm-debug.log
 
 .plexi
-wordpress
-php-config.ini
+config.ini

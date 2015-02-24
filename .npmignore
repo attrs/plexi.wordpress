@@ -13,5 +13,4 @@ logs/
 *.log
 
 .plexi
-wordpress
-php-config.ini
+config.ini
