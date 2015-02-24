@@ -97,7 +97,6 @@ function phpinstall(callback) {
 		});
 		
 		detected.reverse();
-		detected.push('Download');
 	}
 	
 	inquirer.prompt([

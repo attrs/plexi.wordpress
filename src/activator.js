@@ -14,7 +14,7 @@ module.exports = {
 					"default": {
 						"console": false,
 						"docbase": "wordpress",
-						"host": "localhost",
+						"host": "127.0.0.1",
 						"port": 9100
 					}
 				}
@@ -23,7 +23,13 @@ module.exports = {
 		}
 				
 		for(var k in pref.instances) {
-			Wordpress.create(k, pref.instances[k]);
+			var wordpress = Wordpress.create(k, pref.instances[k]);
+			util.debug('wordpress', 'starting at', wordpress.options.docbase);
+			wordpress.ensureInstall(function(err) {
+				if( err ) return util.error(err);
+	
+				wordpress.start();
+			});
 		}
 		
 		return Wordpress;

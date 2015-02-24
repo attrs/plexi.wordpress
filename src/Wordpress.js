@@ -68,7 +68,8 @@ Wordpress.prototype = {
 			cwd: docbase,
 			env: env
 		}).on('close', function (code, signal) {
-			util.debug('wordpress', 'closed', code);
+			if( code === 0 ) util.debug('wordpress', 'closed', code);
+			else util.error('wordpress', 'closed with error', code);
 		}).on('error', function(err) {
 			util.error('wordpress', 'error', err);
 		});
