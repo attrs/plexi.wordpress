@@ -14,7 +14,6 @@ module.exports = {
 					"default": {
 						"console": false,
 						"docbase": "wordpress",
-						"host": "127.0.0.1",
 						"port": 9100
 					}
 				}
